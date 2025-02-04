@@ -21,7 +21,6 @@ if "%OS%"=="Windows_NT" @setlocal
 if "%OS%"=="WINNT" @setlocal
 
 rem --- First two utilities for exiting --------------------------------------------
-
 goto endUtils
 
 :usage
@@ -40,7 +39,7 @@ echo     /p ^<port^>               The port that OpenRefine should bind to. Defa
 echo     /v ^<level^>              Verbosity level [error, warn, info, debug, trace].
 echo     /w ^<path^>               Path to the webapp. Default: src\main\webapp.
 echo     /x ^<name=value^>         Additional configuration parameters to pass to OpenRefine.
-echo.
+echo     /version <version>         Version number for packaging(dist).
 echo Actions
 echo     build                   Build OpenRefine.
 echo     clean                   Clean compiled classes.
@@ -86,6 +85,14 @@ for /f "usebackq tokens=1,* delims== " %%a in (`type "!REFINE_INI_PATH!" ^| find
 )
 														 
 rem ----- Parse the command line args -----------------------------------------
+set "VERSION_PARAMETER="
+for%%A in (%*) do(
+    if "%%A"=="/version"(
+            set VERSION_PARAMETER=%%B
+                shift
+                shift
+     )
+)
 
 :loop
 if "%~1"=="" goto checkVars
