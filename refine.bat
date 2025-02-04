@@ -195,6 +195,17 @@ if ""%ACTION%"" == ""lint"" goto doMvn
 if ""%ACTION%"" == ""clean"" goto doMvn
 if ""%ACTION%"" == ""run"" goto doRun
 if ""%ACTION%"" == """" goto doRun
+if""ACTION%"" ==""dist""(
+    rem---------check version and incorporate in Maven command-------------------
+    if not "%VERSION_PARAMETER%""==""(
+        set MVN_ACTION=mvn -Drevision=%VERSIOON_PARAMETER% package -P windows
+    ) else(
+        echo specify version with /version=<version>
+        exit /B 1
+    )
+    call "%MVN% %MVN_ACTION%
+    goto :eof
+)
   echo Unknown Refine command called "%1", type "refine /?" for proper usage.
   exit /B 1
 
